@@ -1,18 +1,76 @@
-name: Docker Image CI
+name: ACR Build and Tag Image
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "Releases" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "Releases" ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version type'
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 jobs:
 
-  build:
+  build_tag:
 
     runs-on: ubuntu-latest
-
+    outputs:
+      NEW_TAG: ${{ steps.set_ouput.outputs.NEW_TAG}}
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag djdemo:$(date +%s)
+      with:
+        fetch-depth: '0'
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ secrets.ACR_LOGIN_SERVER }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Get current Image tag
+      run: |
+        AzureRegistryName="imagevulacr"
+        RepositoryName="djdemo"  # Use input directly
+        GET_TAG=$(az acr repository show-tags --name $AzureRegistryName --repository $RepositoryName --orderby time_desc --output tsv | head -n 1)
+        CURRENT_TAG="${GET_TAG:1}"
+        IFS="." read -ra version_components <<< "$CURRENT_TAG";
+        major=${version_components[0]}
+        minor=${version_components[1]}
+        patch=${version_components[2]:-0}
+        echo "Major: $major"
+        echo "Minor: $minor"
+        echo "Patch: $patch"
+        case ${{ github.event.inputs.version }} in
+          major)
+            new_tag="v$((major + 1)).0.0"
+            ;;
+          minor)
+            new_tag="v$((major)).$((minor + 1)).$((patch))"
+            ;;
+          patch)
+            new_tag="v$v$((major)).$((minor)).$((patch + 1))"
+            ;;
+        esac
+        echo "NEW_TAG=$new_tag" >> $GITHUB_ENV
+
+    - name: Build and Push image (using input and ouput)
+      id: set_ouput
+      run: |
+        docker build -t imagevulacr.azurecr.io/djdemo:$NEW_TAG .
+        docker push --disable-content-trust imagevulacr.azurecr.io/djdemo:$NEW_TAG
+        echo "::set_output name=NEW_TAG::$NEW_TAG"
+
