@@ -67,10 +67,18 @@ jobs:
         esac
         echo "NEW_TAG=$new_tag" >> $GITHUB_ENV
 
-    - name: Build and Push image (using input and ouput)
+    - name: Build, Tag and Push image (using input and ouput) main
       id: set_ouput
       run: |
         docker build -t imagevulacr.azurecr.io/djdemo:$NEW_TAG .
         docker push --disable-content-trust imagevulacr.azurecr.io/djdemo:$NEW_TAG
         echo "::set_output name=NEW_TAG::$NEW_TAG"
+    
+    - name: Tag source code
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "github-actions@users.noreply.github.com"
+        git tag $NEW_TAG
+        git push origin $NEW_TAG
+
 
