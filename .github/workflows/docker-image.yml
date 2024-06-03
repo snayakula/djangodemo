@@ -1,10 +1,10 @@
 name: ACR Build and Tag Image
 
 on:
-  push:
-    branches: [ "Releases" ]
-  pull_request:
-    branches: [ "Releases" ]
+  # push:
+  #   branches: [ "Releases" ]
+  # pull_request:
+  #   branches: [ "Releases" ]
   workflow_dispatch:
     inputs:
       version:
