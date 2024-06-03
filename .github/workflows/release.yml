@@ -19,12 +19,7 @@ jobs:
       - name: Get Git Tag
         id: get_tag
         run: |
-<<<<<<< HEAD
           TAG=$(git tag --list --sort=-version:refname | head -n 1)
-=======
-          GET_TAG=$(git tag --list --sort=-version:refname | head -n 1)
-          CURRENT_TAG="${GET_TAG:1}"
->>>>>>> main
 
       - name: Create Release
         id: create_release
@@ -32,13 +27,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-<<<<<<< HEAD
           tag_name: $TAG
           release_name: Release $TAG
-=======
-          tag_name: $CURRENT_TAG
-          release_name: Release $CURRENT_TAG
->>>>>>> main
           draft: false
           prerelease: false
       - name: Upload Release Asset
