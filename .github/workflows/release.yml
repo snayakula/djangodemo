@@ -1,25 +1,25 @@
-name: Release Workflow
+name: Create release
 on:
-  push:
-    tags:
-      - "v*"
-  workflow_dispatch:
-
+ push:
+   tags:
+     - "v*"
+ workflow_dispatch:
+permissions:
+ contents: write
 jobs:
-  release:
-    name: Release Pushed Tag
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        id: get_tag
-        run: |
-          TAG=$(git tag --list --sort=-version:refname | head -n 1)
-          gh release create "$TAG" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${tag#v}" \
-              --generate-notes
+ release:
+   name: Release pushed tag
+   runs-on: ubuntu-latest
+   steps:
+     - name: Create release
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         tag: ${{ github.ref_name }}
+       run: |
+         gh release create "$tag" \
+             --repo="$GITHUB_REPOSITORY" \
+             --title="$tag" \
+             --generate-notes
 
     #   - name: Create Release
     #     id: create_release
