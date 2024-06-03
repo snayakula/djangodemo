@@ -1,42 +1,40 @@
 name: Release Workflow
 on:
   push:
-    branches:
-      - Releases
+    tags:
+      - "v*"
   workflow_dispatch:
 
 jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Build project
-#         run: echo "Build your project here"
   release:
-    # needs: build
+    name: Release Pushed Tag
     runs-on: ubuntu-latest
     steps:
-      - name: Get Git Tag
+      - name: Create Release
         id: get_tag
         run: |
           TAG=$(git tag --list --sort=-version:refname | head -n 1)
+          gh release create "$TAG" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${tag#v}" \
+              --generate-notes
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: $TAG
-          release_name: Release $TAG
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /asset.zip
-          asset_name: asset.zip
-          asset_content_type: application/zip
+    #   - name: Create Release
+    #     id: create_release
+    #     uses: actions/create-release@v1
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     with:
+    #       tag_name: $TAG
+    #       release_name: Release $TAG
+    #       draft: false
+    #       prerelease: false
+    #   - name: Upload Release Asset
+    #     uses: actions/upload-release-asset@v1
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     with:
+    #       upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #       asset_path: /asset.zip
+    #       asset_name: asset.zip
+    #       asset_content_type: application/zip
