@@ -62,7 +62,7 @@ jobs:
             new_tag="v$((major)).$((minor + 1)).$((patch))"
             ;;
           patch)
-            new_tag="v$v$((major)).$((minor)).$((patch + 1))"
+            new_tag="v$((major)).$((minor)).$((patch + 1))"
             ;;
         esac
         echo "NEW_TAG=$new_tag" >> $GITHUB_ENV
