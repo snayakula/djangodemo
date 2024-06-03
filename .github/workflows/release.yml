@@ -1,8 +1,10 @@
 name: Release Workflow
 on:
- push:
-   branches:
-     - Releases
+  push:
+    branches:
+      - Releases
+  workflow_dispatch:
+
 jobs:
 #   build:
 #     runs-on: ubuntu-latest
