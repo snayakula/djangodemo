@@ -91,7 +91,7 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'acr-webapp-helloworld2'
-        publish-profile: ${{ secrets.AZ_WEBAPP_PUBLISH_PROFILE }}
+        app-name: 'djdemo-pro'
+        publish-profile: ${{ secrets.AZ_WEBAPP_PUBLISH_PROFILE_PROD }}
         # images: 'imagevulacr.azurecr.io/${{ github.event.inputs.RepositoryName }}:${{ env.NEW_TAG }}'
-        images: 'imagevulacr.azurecr.io/${{ github.event.inputs.RepositoryName }}:${{ needs.build_tag.outputs.NEW_TAG }}'
+        images: 'imagevulacr.azurecr.io/djdemo:${{ needs.build_tag.outputs.NEW_TAG }}'
