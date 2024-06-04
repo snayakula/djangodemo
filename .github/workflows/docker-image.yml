@@ -81,7 +81,5 @@ jobs:
         echo "newtag is:$NEW_TAG"
         git tag -a $NEW_TAG -m "New tag is: $NEW_TAG"
         git push origin $NEW_TAG
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
