@@ -8,6 +8,8 @@ RUN groupadd -r nonroot && useradd -r -g nonroot nonroot -d /app nonroot:
 
 USER nonroot
 
+RUN ls -la
+
 ADD . /app
 
 COPY ./requirements.txt /app/requirements.txt
