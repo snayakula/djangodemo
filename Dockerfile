@@ -1,6 +1,6 @@
 FROM python:3
 
-# ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
@@ -9,9 +9,7 @@ RUN useradd -m -s /bin/bash nonroot
 
 USER nonroot
 
-ENV HOME = /home/nonroot
-
-WORKDIR $HOME
+RUN id
 
 RUN ls -la
 
@@ -25,3 +23,5 @@ COPY . /app
 
 # Set the default command to run the application script
 CMD ["./run_application.sh"]
+
+RUN cd /home/nonroot
