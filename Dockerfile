@@ -25,3 +25,6 @@ COPY . /app
 CMD ["./run_application.sh"]
 
 RUN cd /home/nonroot
+RUN ls
+RUN pwd
+RUN ls -la
