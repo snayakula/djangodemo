@@ -2,13 +2,13 @@ FROM python:3
 
 ENV PYTHONUNBUFFERED 1
 
-RUN groupadd -r nonroot && useradd -r -g nonroot nonroot
-
-# USER nonroot
+# RUN groupadd -r nonroot && useradd -r -g nonroot nonroot -d /app nonroot
+RUN useradd nonroot
+USER nonroot
 
 WORKDIR /app
 
-RUN chown -R nonroot:nonroot /app
+# RUN chown -R nonroot:nonroot /app
 
 # Switch to the nonroot user
 USER nonroot
