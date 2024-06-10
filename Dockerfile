@@ -1,6 +1,6 @@
 FROM python:3
 
-ENV PYTHONUNBUFFERED 1
+# ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
@@ -8,6 +8,10 @@ RUN useradd -m -s /bin/bash nonroot
 # RUN groupadd -r nonroot && useradd -r -g nonroot nonroot -d /app nonroot:
 
 USER nonroot
+
+ENV HOME = /home/nonroot
+
+WORKDIR $HOME
 
 RUN ls -la
 
