@@ -4,7 +4,8 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-RUN groupadd -r nonroot && useradd -r -g nonroot nonroot -d /app nonroot:
+RUN useradd -m -s /bin/bash nonroot
+# RUN groupadd -r nonroot && useradd -r -g nonroot nonroot -d /app nonroot:
 
 USER nonroot
 
