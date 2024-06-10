@@ -2,9 +2,7 @@ FROM python:3
 
 ENV PYTHONUNBUFFERED 1
 
-RUN addgroup -S nonroot \
-    && adduser -S nonroot -G nonroot \
-    && chown -R nonroot:nonroot /app
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot && chown -R nonroot:nonroot /app
 
 USER nonroot
 
