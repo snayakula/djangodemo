@@ -2,6 +2,11 @@ FROM python:3
 
 ENV PYTHONUNBUFFERED 1
 
+RUN addgroup -S nonroot \
+    && adduser -S nonroot -G nonroot \
+    && mkdir -p /path/to/application \
+    && chown -R nonroot:nonroot /app
+
 WORKDIR /app
 
 ADD . /app
