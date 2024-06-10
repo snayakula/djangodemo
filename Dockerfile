@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN addgroup -S nonroot \
     && adduser -S nonroot -G nonroot \
-    && mkdir -p /path/to/application \
+    && mkdir -p /app \
     && chown -R nonroot:nonroot /app
 
 WORKDIR /app
