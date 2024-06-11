@@ -9,13 +9,15 @@ RUN useradd -m -s /bin/bash nonroot
 
 USER nonroot
 
+RUN id
+
+RUN ls -la
+
 ADD . /app
 
 COPY ./requirements.txt /app/requirements.txt
 
 RUN pip install -r requirements.txt
-
-RUN pip show -f $(cat requirements.txt) | grep Version
 
 COPY . /app
 
