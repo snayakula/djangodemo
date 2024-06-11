@@ -9,10 +9,6 @@ RUN useradd -m -s /bin/bash nonroot
 
 USER nonroot
 
-RUN id
-
-RUN ls -la
-
 ADD . /app
 
 COPY ./requirements.txt /app/requirements.txt
