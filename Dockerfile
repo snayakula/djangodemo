@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.11
 
 ENV PYTHONUNBUFFERED 1
 
@@ -15,9 +15,9 @@ RUN ls -la
 
 ADD . /app
 
-COPY ./requirements.txt /app/requirements.txt
+COPY ./patch-requirements.txt /app/patch-requirements.txt
 
-RUN pip install -r requirements.txt
+RUN pip install -r patch-requirements.txt
 
 COPY . /app
 
