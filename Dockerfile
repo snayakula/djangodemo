@@ -15,9 +15,11 @@ RUN ls -la
 
 ADD . /app
 
-COPY ./patch-requirements.txt /app/patch-requirements.txt
+COPY ./requirements.txt /app/requirements.txt
 
-RUN pip install -r patch-requirements.txt
+RUN pip install -r requirements.txt
+
+RUN pip show -f $(cat requirements.txt) | grep Version
 
 COPY . /app
 
